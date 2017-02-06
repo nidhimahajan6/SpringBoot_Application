@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Spring Boot and Thymeleaf example</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h3>New Case Added is.....</h3>
+	<h4>Name:</h4>
+	<p th:text="${Name}" />
+	<h4>Project:</h4>
+	<p th:text="${Project}" />
+	
+	<h4>Course:</h4>
+	<p th:text="${Course}" />
+	<h4>DistinctionCount:</h4>
+	<p th:text="${DistinctionCount}" />
+	<h4>Memo Details:</h4>
+	  SuperVisor: <p th:text="${Memo.supervisor}" />
+	  Student: <p th:text="${Memo.student}" />
+	  Project : <p th:text="${Memo.project}" />
+	
+	
+	<h4>invoice Details:</h4>
+	  SuperVisor: <p th:text="${studentInvoice}" />
+	<!--   Student: <p th:text="${invoice.student}" />
+	  Project : <p th:text="${invoice.project}" /> -->
+	
+</body>
+</html>
