@@ -137,11 +137,15 @@ public class StudentController {
    		
    	//	studentService.setProductRepository(studentRepository);
    		// studentService = new StudentService();
-   		Student std  = studentService.saveStudent(new Student()); // Test for persistence 
+   		Student student1 = new Student();
+   		student1.setCourse("Machine learning");
+   		student1.setExpenses(2000);
+   		Student std  = studentService.saveStudent(student1); // Test for persistence 
    		
    		
    		
-   		studentRepository.save(new Student());
+   	//	studentRepository.save(new Student());
+   		studentRepository.save(student1);
    		
    		System.out.println("After saving the student identity");
    		
