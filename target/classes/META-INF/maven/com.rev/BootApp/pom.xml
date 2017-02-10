@@ -10,6 +10,24 @@
   <name>BootApp</name>
   <url>http://maven.apache.org</url>
   
+  <build>
+  <plugins>
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <configuration>
+        <archive>
+        	<manifestFile>src/main/resources/MANIFEST.MF</manifestFile>
+            <manifest>
+                <addClasspath>true</addClasspath>
+            </manifest>
+           
+        </archive>
+    </configuration>
+</plugin>
+  </plugins>
+  </build>
+  
 	<!-- <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -73,6 +91,12 @@
     <artifactId>spring-context</artifactId>
     <!-- <version>3.1.1.RELEASE</version> -->
 </dependency>
+
+
+ <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
     
     <dependency>
             <groupId>org.springframework</groupId>
@@ -204,4 +228,6 @@
         </dependency>
         
   </dependencies>
+  
+ 
 </project>

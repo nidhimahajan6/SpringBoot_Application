@@ -14,6 +14,14 @@ public class FeedProcessor implements DataFeeder{
 	public void processFeed() {
 		System.out.println(" Feeder processing the feeds ");
 		
+		/*
+		 * 
+		 * her to initialte the ArrayBlockingQueue
+		 */
+		
+		
+		
+		
 	}
 
 

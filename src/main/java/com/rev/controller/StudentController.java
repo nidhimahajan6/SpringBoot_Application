@@ -29,6 +29,8 @@ import com.rev.service.EmailNotifier;
 import com.rev.service.EmailNotifierImpl;
 import com.rev.service.StudentService;
 
+//import bin.financeEMFDemo.FinanceEMFDemoFactory;
+
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -46,6 +48,12 @@ public class StudentController {
  //   
   //  private ProductService productService;
 
+   
+  // FinanceEMFDemoFactory factory = FinanceEMFDemoFactory.eINSTANCE;
+   
+   
+   
+   
     @Autowired
     public void setStudentService(StudentService studentService) {
         this.studentService = studentService;
@@ -137,7 +145,7 @@ public class StudentController {
    		
    	//	studentService.setProductRepository(studentRepository);
    		// studentService = new StudentService();
-   		Student student1 = new Student();
+   		/*Student student1 = new Student();
    		student1.setCourse("Machine learning");
    		student1.setExpenses(2000);
    		Student std  = studentService.saveStudent(student1); // Test for persistence 
@@ -160,35 +168,35 @@ public class StudentController {
    		 * calling the Memo creation for the (a new case) for student
    		 */
    		
-   		MemoDocument memoDocument = new MemoDocumentImpl();
+   	//	MemoDocument memoDocument = new MemoDocumentImpl();
    		
    		// Create Memo
    	/*	Memo memo = new Memo(st, st.getSupervisor()!=null?st.getSupervisor():"DummySuperVisor", 
    				st.getProject()!=null?st.getProject():new Project());*/ // Values to be fetched from UI form using thymeLeaf
    		// These values kept dummy for time being 
-   		Memo memo = null;
+   	/*	Memo memo = null;
    		memoDocument.addProject(memo, st);
    		memoDocument.addSupervisor(memo, st);
    		
-   		model.addAttribute("Memo", memo); // Add memo as object after building the Memo Object
+   		model.addAttribute("Memo", memo); //// Add memo as object after building the Memo Object
    		
    		/*model.addAttribute("title", "Intern");
    		model.addAttribute("content", "AI");*/
    		
    		// Craete the Invoice with memo details + expenses
    		
-   		Student stu = st;
+   		/*Student stu = st;
    		
    		MemoDocument invoiceDocument = new InvoiceDocumentImpl(memoDocument);
    		
-   		invoiceDocument.addProject(memo, stu);
+   	/*	invoiceDocument.addProject(memo, stu);
    		invoiceDocument.addSupervisor(memo, st);
    		
    		//Invoice invoice = new Invoice();
    		
    	
    		model.addAttribute("studentInvoice", stu);
-   		
+   		*/
    		/*** STATE PATTERN ***************/
    		//Test for state Design Pattern
    		
@@ -231,7 +239,7 @@ public class StudentController {
    		
    	// Notification Mail for Feeder processing
    		if(context.getDataFeeder().getClass().equals(FeedReader.class)){
-EmailNotifier emailNotifier = new EmailNotifierImpl(new org.springframework.mail.javamail.JavaMailSenderImpl());
+   			EmailNotifier emailNotifier = new EmailNotifierImpl(new org.springframework.mail.javamail.JavaMailSenderImpl());
    			
    			EmailDTO emailDTO = new EmailDTO();
    			
