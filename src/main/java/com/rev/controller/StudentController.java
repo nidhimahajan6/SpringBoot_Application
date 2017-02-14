@@ -17,6 +17,7 @@ import com.rev.entity.MemoDocument;
 import com.rev.entity.MemoDocumentImpl;
 import com.rev.entity.Project;
 import com.rev.entity.Student;
+import com.rev.entity.User;
 import com.rev.feed.DataFeeder;
 import com.rev.feed.FeedContext;
 import com.rev.feed.FeedProcessor;
@@ -28,6 +29,15 @@ import com.rev.repository.StudentRepository;
 import com.rev.service.EmailNotifier;
 import com.rev.service.EmailNotifierImpl;
 import com.rev.service.StudentService;
+import com.rev.service.UserService;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 //import bin.financeEMFDemo.FinanceEMFDemoFactory;
 
@@ -41,6 +51,10 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+    
+    
+    @Autowired
+    private UserService userService;
     
    @Autowired
     private StudentRepository studentRepository;
@@ -94,15 +108,135 @@ public class StudentController {
     
     //1. Test for Executor Service
     
-    @RequestMapping(value = "/{name}/{id}", method = RequestMethod.GET)
-//    public String insertStudentById(Model model,@RequestParam(value="name", required=false, defaultValue="World") String name){
+  /*  @RequestMapping(value = "/{name}/{id}", method = RequestMethod.GET)
     public String insertStudentById(Model model,@PathVariable("id") int id, @PathVariable("name") String name){
     	Student st = studentService.insertStudentById(id,name);
     	model.addAttribute("student",st);
     	return "students";
+    }
+    */
+    
+    // Fetch records for  particular Project Code
+    
+    @RequestMapping(value = "/{name}/{id}", method = RequestMethod.GET)
+    @ResponseBody
+//    public String insertStudentById(Model model,@RequestParam(value="name", required=false, defaultValue="World") String name){
+    public List<User> fetchProjects(Model model,@PathVariable("id") int id,@PathVariable("name") String name){
+    	long start = System.nanoTime();
+    	//List<User> listOfUsers = userService.fetchUsers(name,10,3);
+    	List<User> listOfUsers = new LinkedList<>();
+    //	List<Student> listOfStudents = studentService.findById(id);
+    	
+    	UserCallable userCallable = new UserCallable(name);
+    	
+    	StudentCallable studentCallable = new StudentCallable(id);
+
+    	FutureTask<List<User>> futureTask1 = new FutureTask<List<User>>(userCallable);
+    	FutureTask<List<Student>> futureTask2 = new FutureTask<List<Student>>(studentCallable);
+    	
+    	ExecutorService executor = Executors.newFixedThreadPool(2);
+    	
+    	executor.execute(futureTask1);
+    	executor.execute(futureTask2);
+    	while(true){
+    		
+    		if(futureTask1.isDone() && futureTask2.isDone()){
+    			
+    			System.out.println("user fetching done");
+    			
+    			System.out.println(" After fetching  the users list "+ (System.nanoTime()-start));
+    	    	try {
+					System.out.println(" User:List size is>>>>>>>> " +  futureTask1.get().size());
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    	    	try {
+					System.out.println(" Student : List size is>>>>>>>> " +  futureTask2.get().toString());
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    	    	executor.shutdown();
+    	    	return listOfUsers;
+    		}
+    		if(!futureTask1.isDone()){
+				//wait indefinitely for future task to complete
+				try {
+					futureTask1.get();
+					System.out.println("FutureTask1 output=>"+futureTask1.get().size());
+					
+					futureTask2.get();
+					System.out.println("FutureTask2 output=>"+futureTask2.get().size());
+					
+					
+				} catch (InterruptedException e) {
+					System.out.println("FutureTask1 InterruptedException="+e.getMessage());
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					System.out.println("FutureTask1 ExecutionException="+e.getMessage());
+					e.printStackTrace();
+				}
+				}
+    	}
+    	
+    	
+    	
+    	
+    	/*model.addAttribute("student",st);
+    	return "students";*/
        // return st;
     }
     
+    
+    // User Task
+     class UserCallable implements Callable<List<User>> {
+
+    	private long waitTime;
+    	private String name;
+    	
+    	List<User> listOfUsers = new LinkedList<>();
+    	public UserCallable(String name){
+    		this.name=name;
+    		
+    	}
+    	@Override
+    	public List<User> call() throws Exception {
+    		//Thread.sleep(waitTime);
+    		listOfUsers = userService.fetchUsers(name,10,3);
+            //return the thread name executing this callable task
+            return listOfUsers;
+    	}
+
+    }
+     
+     
+     // Student Task
+     class StudentCallable implements Callable<List<Student>> {
+
+     	private long waitTime;
+     	private int id;
+     	
+     	List<Student> listOfStudents = new LinkedList<>();
+     	public StudentCallable(int id){
+     		this.id=id;
+     		
+     	}
+     	@Override
+     	public List<Student> call() throws Exception {
+     		//Thread.sleep(waitTime);
+     		listOfStudents = studentService.findById(id);
+             //return the thread name executing this callable task
+             return listOfStudents;
+     	}
+
+     }
     
     //Create Memo Document for a Student into a Project
     

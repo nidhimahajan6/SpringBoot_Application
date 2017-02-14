@@ -2,7 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Spring Boot and Thymeleaf example</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+<!--  custom JS -->
+<script src="./js/main.js"></script>
 </head>
 <body>
 
@@ -25,6 +37,11 @@
 		</table>
 	</form>
 	
+	<button type="button" class="btn btn-primary" id="fetchUsers" onclick=fetchUsers();>FetchUsers</button>
+	
+	<div id="div1">
+	 ResultData
+	</div>
 	<!-- <h3>Spring Boot and Thymeleaf, part 2 - forms</h3> -->
 	<!-- <form action="/students/" th:action="@{/}" th:object="${post}" method="post">
 		<table>

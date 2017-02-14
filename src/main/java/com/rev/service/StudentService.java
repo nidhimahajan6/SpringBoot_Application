@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.rev.dao.StudentDao;
 import com.rev.entity.Student;
+import com.rev.entity.User;
 import com.rev.repository.StudentRepository;
 //import com.rev.repository.StudentRepositoryImpl;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -25,6 +27,9 @@ public class StudentService {
     @Autowired
    // @Qualifier("fakeData")
     private StudentDao studentDao;
+    
+    
+    
 
     public Collection<Student> getAllStudents(){
         return this.studentDao.getAllStudents();
@@ -71,9 +76,11 @@ public class StudentService {
     }
     
     
-    
-    
-    
+
+    public List<Student> findById(int id){
+       	//StudentRepository studentRepository = new StudentRepositoryImpl();
+       	return this.studentRepository.findByuser_id(id);
+       }
     
     
     

@@ -46,7 +46,7 @@ public class FeederToStart implements DataFeeder{
 		 */
 		FeedUtility utility = new FeedUtility(queue);
 		
-		for(int i=0;i<30;i++){
+		for(int i=0;i<3;i++){
 			Thread t = new Thread(utility);
 			t.setName("Thread_ " + i);
 			executorService.execute(t);

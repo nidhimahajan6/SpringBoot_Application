@@ -13,8 +13,19 @@ public class Student {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
+    private int user_id;
+    public int getUser_id() {
+		return user_id;
+	}
+
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+
+
+
+	private String name;
     private String course;
     
     @Column(name="distinctioncount")
@@ -51,11 +62,7 @@ public class Student {
 		this.expenses = expenses;
 	}
 
-	@Override
-	public String toString() {
-		return "Student [id=" + id + ", name=" + name + ", course=" + course + ", distinctionCount=" + distinctionCount
-				+ ", expenses=" + expenses + "]";
-	}
+	
 
 	private long expenses; 
 
@@ -69,21 +76,10 @@ public class Student {
 
 	
 
-	public Student(int id, String name, String course) {
-        this.id = id;
-        this.name = name;
-        this.course = course;
-    }
+	
+   
 
-    public Student(){}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+   
 
     public String getName() {
         return name;

@@ -2,7 +2,9 @@ package com.rev.utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -11,7 +13,10 @@ import com.rev.entity.Quote;
 
 public class FeedUtility implements Runnable{
 
-	List<String> urlList = new ArrayList<>();
+	private List<String> urlList = new ArrayList<>();
+	
+	private Map<String,Quote> conMap = new ConcurrentHashMap<>();
+	
 	private BlockingQueue<Quote> queue;
 	 int i=0;
 	public FeedUtility(BlockingQueue<Quote> queue) {
@@ -24,8 +29,8 @@ public class FeedUtility implements Runnable{
 	urlList.add("http://echo.jsontest.com/title/ipsum/content/blah");
 	urlList.add("http://echo.jsontest.com/title/ipsum/");
 	urlList.add("http://date.jsontest.com/?service=ip");
-	urlList.add("http://echo.jsontest.com/title/ipsum/content/");
-	urlList.add("api.openweathermap.org/data/2.5/weather?q=London");
+	//urlList.add("http://echo.jsontest.com/title/ipsum/content/");
+	//urlList.add("api.openweathermap.org/data/2.5/weather?q=London");
 	for(int i=0;i<28;i++){
 		urlList.add("http://echo.jsontest.com/key/value/one/two");
 	}
@@ -56,6 +61,10 @@ public class FeedUtility implements Runnable{
 				System.out.println(" ");
 				System.out.println(" ");
 			    System.out.println(" Producer : Thread executing is  " + Thread.currentThread().getName()+" Quote is  " + quote.toString());
+			    // adding to concurrent map
+			    
+			    
+			    QuoteMap.getInstance().put(quote.getTitle()==null?"dummy":quote.getTitle(), quote);
 				//System.out.println(" --> "+ quote);
 				queue.put(quote);// put into the queue the stock latest quotes 
 				}catch (Exception e) {
