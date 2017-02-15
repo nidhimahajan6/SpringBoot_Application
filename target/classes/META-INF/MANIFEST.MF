@@ -56,7 +56,8 @@ Class-Path: standard-1.1.2.jar spring-boot-1.4.0.RELEASE.jar spring-bo
  oot-starter-data-rest-1.4.0.RELEASE.jar spring-data-rest-webmvc-2.5.2
  .RELEASE.jar spring-data-rest-core-2.5.2.RELEASE.jar spring-hateoas-0
  .20.0.RELEASE.jar spring-plugin-core-1.2.0.RELEASE.jar evo-inflector-
- 1.2.1.jar persistence-api-1.0.2.jar mysql-connector-java-5.1.39.jar
+ 1.2.1.jar persistence-api-1.0.2.jar mysql-connector-java-5.1.39.jar p
+ ostgresql-9.4.1209.jre7.jar
 Implementation-Vendor: Pivotal Software, Inc.
 Main-Class: com.rev.AppClient
 Bundle-Name: BootApp

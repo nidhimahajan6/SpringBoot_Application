@@ -9,6 +9,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	    private Value value;
 	  
 	    private String id;
+	    
+	    private String content;
+
+		public String getContent() {
+			return content;
+		}
+
+		public void setContent(String content) {
+			this.content = content;
+		}
 
 		public String getId() {
 			return id;
@@ -20,11 +30,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 		
 
+		
+
+
+
 		@Override
 		public String toString() {
-			return "Quote [type=" + type + ", value=" + value + ", id=" + id + ", title=" + title + ", key=" + key
-					+ ", ip=" + ip + "]";
+			return "Quote [type=" + type + ", value=" + value + ", id=" + id + ", content=" + content + ", title="
+					+ title + ", key=" + key + ", ip=" + ip + "]";
 		}
+
+
+
+
 
 
 

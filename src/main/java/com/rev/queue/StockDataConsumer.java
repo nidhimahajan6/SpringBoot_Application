@@ -13,6 +13,11 @@ public class StockDataConsumer implements Runnable{
 		super();
 		this.queue = queue;
 	}
+	
+	/* concurreny using concurrntHashMap
+	 */
+	
+	
 
 	@Override
 	public void run() {
@@ -23,6 +28,8 @@ public class StockDataConsumer implements Runnable{
 		Quote quote;
 		try {
 			while((quote = queue.take()).toString()!=null){
+				
+				
 				System.out.println(" Consumer : Thread reading quotes " + quote.toString() +"  is ---> " + Thread.currentThread().getName());
 			}
 			System.out.println(" ");

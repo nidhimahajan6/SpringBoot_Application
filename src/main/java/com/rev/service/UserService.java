@@ -24,9 +24,16 @@ public class UserService {
 
    
    
-   public List<User> fetchUsers(String name,int limit,int offSet){
+   public List<User> fetchUsers(String name){
    	//StudentRepository studentRepository = new StudentRepositoryImpl();
    	return this.userRepository.findByPreferredname(name);
    }
+   
+   
+   public List<User> fetchUsersById(int id){
+	   	//StudentRepository studentRepository = new StudentRepositoryImpl();
+	   	return this.userRepository.findByUserId(id);
+	   } 
+   
 
 }

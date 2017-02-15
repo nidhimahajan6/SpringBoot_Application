@@ -1,4 +1,5 @@
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\dao\StudentDao.java
+C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\utility\FeedProcessorUtility.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\utility\MailStatus.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\feed\FeedContext.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\service\EmailNotifierImpl.java
@@ -7,11 +8,15 @@ C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\repository\StudentRepository.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\entity\Memo.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\entity\Student.java
+C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\utility\FeedUtility.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\dto\EmailDTO.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\helper\StudentHelper.java
+C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\service\UserService.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\feed\FeedReady.java
+C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\repository\UserRepository.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\service\EmailNotifier.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\entity\Invoice.java
+C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\queue\StockDataConsumer.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\utility\EmailUtility.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\entity\MemoDocument.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\feed\DataFeeder.java
@@ -29,5 +34,7 @@ C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\feed\FeedReader.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\entity\Value.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\entity\Project.java
+C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\utility\QuoteMap.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\utility\Builder.java
+C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\entity\User.java
 C:\Software_Personal\SpringBoot_Application-master\SpringBoot_Application-master\src\main\java\com\rev\utility\StudentBuilder.java

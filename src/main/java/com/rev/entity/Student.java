@@ -8,21 +8,64 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="student")
+@Table(name="student",schema="ikare")
 public class Student {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_id;
-    public int getUser_id() {
-		return user_id;
+    private int id;
+   
+
+  // private Project project; 
+	
+	public int getId() {
+	return id;
+}
+
+
+/*public Project getProject() {
+		return project;
 	}
 
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setProject(Project project) {
+		this.project = project;
+	}
+*/
+
+public void setId(int id) {
+	this.id = id;
+}
+
+
+	
+
+
+	public Student(int id, String name, String course) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.course = course;
+}
+
+
+	public Student(int id, String name, String course, int distinctionCount, String supervisor, long expenses) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.course = course;
+		this.distinctionCount = distinctionCount;
+		this.supervisor = supervisor;
+		this.expenses = expenses;
 	}
 
+
+	public Student() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+	
 
 
 	private String name;

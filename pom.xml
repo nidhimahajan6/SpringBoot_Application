@@ -227,7 +227,16 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         
+        <!--  POSTGRE ONFIGURATION FOR DATASOURCE -->
+  
+  <dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+  
+</dependency>
+        
   </dependencies>
+  
   
  
 </project>

@@ -23,7 +23,7 @@ public class FeedContext {
 	}*/
 	
 	
-	public void feedStateCheck(){
+	public void feedStateChecker(){
 		
 		if(dataFeeder.getClass().equals(FeederToStart.class)){
 			this.dataFeeder = new FeedReader(this);
@@ -39,7 +39,7 @@ public class FeedContext {
 	}
 	
 	
-	public void feedStatus(){
+	public void processFeed(){
 		this.dataFeeder.processFeed();
 	}
 	

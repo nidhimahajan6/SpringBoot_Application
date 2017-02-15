@@ -79,7 +79,7 @@ public class StudentService {
 
     public List<Student> findById(int id){
        	//StudentRepository studentRepository = new StudentRepositoryImpl();
-       	return this.studentRepository.findByuser_id(id);
+       	return this.studentRepository.findById(id);
        }
     
     

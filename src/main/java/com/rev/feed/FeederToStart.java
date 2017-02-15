@@ -13,7 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.rev.entity.Quote;
 import com.rev.queue.StockDataConsumer;
-import com.rev.utility.FeedUtility;
+import com.rev.utility.StockFeedUtility;
+import com.rev.utility.WeatherFeedUtility;
 
 public class FeederToStart implements DataFeeder{
 	
@@ -44,10 +45,44 @@ public class FeederToStart implements DataFeeder{
 		/*
 		 * Quotes: Stock prices producer
 		 */
-		FeedUtility utility = new FeedUtility(queue);
+		StockFeedUtility stockFeedUtility = new StockFeedUtility(queue);
+		
+	
+		
+		
+		for(int i=0;i<2;i++){
+			Thread t = new Thread(stockFeedUtility);
+			t.setName("Thread_ " + i);
+			executorService.execute(t);
+			//t.start();
+		}
+		System.out.println("Started All Producers...................");
+		executorService.shutdown();
+		try {
+			if(executorService.awaitTermination(10000, TimeUnit.MILLISECONDS))
+				System.out.println(" Finished all threads");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		/*************************** Stock feeder ends here *******************/
+	
+		
+		/*
+		 * 
+		 * Feeder for Weather
+		 */
+		
+		/*
+		 * Quotes: Stock prices producer
+		 */
+		WeatherFeedUtility weatherFeedUtility = new WeatherFeedUtility(queue);
+		
+	
+		
 		
 		for(int i=0;i<3;i++){
-			Thread t = new Thread(utility);
+			Thread t = new Thread(weatherFeedUtility);
 			t.setName("Thread_ " + i);
 			executorService.execute(t);
 			//t.start();
@@ -62,7 +97,6 @@ public class FeederToStart implements DataFeeder{
 		}
 		
 		
-	
 		
 	}
 

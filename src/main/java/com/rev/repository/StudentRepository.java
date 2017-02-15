@@ -8,17 +8,20 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.rev.entity.Student;
+import com.rev.entity.User;
 
 
 //@RepositoryRestResource
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer>{
 	
-	@SuppressWarnings("unchecked")
-	Student save(Student student);
+	/*@SuppressWarnings("unchecked")
+	Student save(Student student);*/
 	
-	@Query("SELECT k FROM student k WHERE k.user_id = :user_id")	
-	List<Student> findByuser_id(@Param("user_id")  int user_id);
+	@Query("SELECT k FROM Student k WHERE k.id = :id")	
+	List<Student> findById(@Param("id")  int id);
 	
 	
 }
+
+

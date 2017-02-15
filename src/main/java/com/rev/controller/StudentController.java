@@ -23,7 +23,10 @@ import com.rev.feed.FeedContext;
 import com.rev.feed.FeedProcessor;
 import com.rev.feed.FeedReader;
 import com.rev.feed.FeedReady;
+import com.rev.feed.FeederTemplate;
 import com.rev.feed.FeederToStart;
+import com.rev.feed.StockFeeder;
+import com.rev.feed.WeatherFeeder;
 import com.rev.form.Post;
 import com.rev.repository.StudentRepository;
 import com.rev.service.EmailNotifier;
@@ -38,6 +41,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 //import bin.financeEMFDemo.FinanceEMFDemoFactory;
 
@@ -59,13 +63,7 @@ public class StudentController {
    @Autowired
     private StudentRepository studentRepository;
 
- //   
-  //  private ProductService productService;
-
-   
-  // FinanceEMFDemoFactory factory = FinanceEMFDemoFactory.eINSTANCE;
-   
-   
+ 
    
    
     @Autowired
@@ -99,42 +97,24 @@ public class StudentController {
         studentService.insertStudent(student);
     }
     
-    //1. Test for Executor Service
-   /* @RequestMapping(value = "/{records}", method = RequestMethod.GET)
-    public void getStudentRecordsById(@PathVariable("id") int id){
-        studentService.getStudentRecordsById(id);
-    }*/
-    
-    
-    //1. Test for Executor Service
-    
-  /*  @RequestMapping(value = "/{name}/{id}", method = RequestMethod.GET)
-    public String insertStudentById(Model model,@PathVariable("id") int id, @PathVariable("name") String name){
-    	Student st = studentService.insertStudentById(id,name);
-    	model.addAttribute("student",st);
-    	return "students";
-    }
-    */
-    
     // Fetch records for  particular Project Code
     
     @RequestMapping(value = "/{name}/{id}", method = RequestMethod.GET)
     @ResponseBody
-//    public String insertStudentById(Model model,@RequestParam(value="name", required=false, defaultValue="World") String name){
     public List<User> fetchProjects(Model model,@PathVariable("id") int id,@PathVariable("name") String name){
     	long start = System.nanoTime();
-    	//List<User> listOfUsers = userService.fetchUsers(name,10,3);
     	List<User> listOfUsers = new LinkedList<>();
-    //	List<Student> listOfStudents = studentService.findById(id);
-    	
+        
     	UserCallable userCallable = new UserCallable(name);
-    	
     	StudentCallable studentCallable = new StudentCallable(id);
+    	UserCallable1 userCallable1 = new UserCallable1(id);
+    	
 
-    	FutureTask<List<User>> futureTask1 = new FutureTask<List<User>>(userCallable);
+    	//FutureTask<List<User>> futureTask1 = new FutureTask<List<User>>(userCallable);
+    	FutureTask<List<User>> futureTask1 = new FutureTask<List<User>>(userCallable1);
     	FutureTask<List<Student>> futureTask2 = new FutureTask<List<Student>>(studentCallable);
     	
-    	ExecutorService executor = Executors.newFixedThreadPool(2);
+    	ExecutorService executor = Executors.newFixedThreadPool(1);
     	
     	executor.execute(futureTask1);
     	executor.execute(futureTask2);
@@ -148,24 +128,21 @@ public class StudentController {
     	    	try {
 					System.out.println(" User:List size is>>>>>>>> " +  futureTask1.get().size());
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
     	    	try {
 					System.out.println(" Student : List size is>>>>>>>> " +  futureTask2.get().toString());
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
     	    	executor.shutdown();
-    	    	return listOfUsers;
+    	    	
     		}
+    		
     		if(!futureTask1.isDone()){
 				//wait indefinitely for future task to complete
 				try {
@@ -184,21 +161,21 @@ public class StudentController {
 					e.printStackTrace();
 				}
 				}
+    		
+    		try {
+				executor.awaitTermination(10, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	return listOfUsers;
     	}
-    	
-    	
-    	
-    	
-    	/*model.addAttribute("student",st);
-    	return "students";*/
-       // return st;
     }
     
     
     // User Task
      class UserCallable implements Callable<List<User>> {
 
-    	private long waitTime;
     	private String name;
     	
     	List<User> listOfUsers = new LinkedList<>();
@@ -209,12 +186,30 @@ public class StudentController {
     	@Override
     	public List<User> call() throws Exception {
     		//Thread.sleep(waitTime);
-    		listOfUsers = userService.fetchUsers(name,10,3);
-            //return the thread name executing this callable task
+    		listOfUsers = userService.fetchUsers(this.name);
             return listOfUsers;
     	}
 
     }
+     
+     
+     class UserCallable1 implements Callable<List<User>> {
+
+     	private int id;
+     	
+     	List<User> listOfUsers = new LinkedList<>();
+     	public UserCallable1(int id){
+     		this.id=id;
+     		
+     	}
+     	@Override
+     	public List<User> call() throws Exception {
+     		//Thread.sleep(waitTime);
+     		listOfUsers = userService.fetchUsersById(this.id);
+             return listOfUsers;
+     	}
+
+     }
      
      
      // Student Task
@@ -251,6 +246,32 @@ public class StudentController {
     }
     
     
+ 
+    @RequestMapping(value = "/feeds/{feedType}",method = RequestMethod.GET)
+    public String feedsForApp(Model model,@PathVariable("feedType") String feedType){
+    	System.out.println(" Inside fetching feeds...... ");
+	/**************************cal to stock template ***************/
+   		if(feedType.equals("stock")){
+   		FeederTemplate stockFeederTemplate = new StockFeeder();
+   		
+   		stockFeederTemplate.feedProcessor();
+   		
+   		}
+   		
+   		
+   		/**************************cal to weather template ***************/
+   		if(feedType.equals("weather")){
+   		FeederTemplate weatherFeederTemplate = new WeatherFeeder();
+   		
+   		weatherFeederTemplate.feedProcessor();
+   		}
+    	return "memoPage";
+      //  studentService.insertStudent(student);
+    }
+    
+    
+    
+    
    /* @RequestMapping(value = "/", method = RequestMethod.POST)
 	public String addNewPost(@Valid Post post, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -277,17 +298,12 @@ public class StudentController {
    		 */
    		
    		
-   	//	studentService.setProductRepository(studentRepository);
-   		// studentService = new StudentService();
-   		/*Student student1 = new Student();
-   		student1.setCourse("Machine learning");
-   		student1.setExpenses(2000);
+   		Student student1 = new Student();
+   		student1.setCourse("deep learning");
+   		student1.setExpenses(12000);
    		Student std  = studentService.saveStudent(student1); // Test for persistence 
    		
-   		
-   		
-   	//	studentRepository.save(new Student());
-   		studentRepository.save(student1);
+   		studentRepository.save(std);
    		
    		System.out.println("After saving the student identity");
    		
@@ -302,13 +318,12 @@ public class StudentController {
    		 * calling the Memo creation for the (a new case) for student
    		 */
    		
-   	//	MemoDocument memoDocument = new MemoDocumentImpl();
+   		MemoDocument memoDocument = new MemoDocumentImpl();
    		
    		// Create Memo
-   	/*	Memo memo = new Memo(st, st.getSupervisor()!=null?st.getSupervisor():"DummySuperVisor", 
-   				st.getProject()!=null?st.getProject():new Project());*/ // Values to be fetched from UI form using thymeLeaf
+   		Memo memo = new Memo(st, st.getSupervisor()!=null?st.getSupervisor():"DummySuperVisor", 
+   				/*st.getProject()!=null?st.getProject():*/new Project()); // Values to be fetched from UI form using thymeLeaf
    		// These values kept dummy for time being 
-   	/*	Memo memo = null;
    		memoDocument.addProject(memo, st);
    		memoDocument.addSupervisor(memo, st);
    		
@@ -317,115 +332,20 @@ public class StudentController {
    		/*model.addAttribute("title", "Intern");
    		model.addAttribute("content", "AI");*/
    		
-   		// Craete the Invoice with memo details + expenses
+   		// Craete the Invoice with memo details + expenses( memo + expenses === Invoice)
    		
-   		/*Student stu = st;
+   		Student stu = st;
    		
    		MemoDocument invoiceDocument = new InvoiceDocumentImpl(memoDocument);
    		
-   	/*	invoiceDocument.addProject(memo, stu);
+   		invoiceDocument.addProject(memo, stu);
    		invoiceDocument.addSupervisor(memo, st);
    		
    		//Invoice invoice = new Invoice();
    		
    	
    		model.addAttribute("studentInvoice", stu);
-   		*/
-   		/*** STATE PATTERN ***************/
-   		//Test for state Design Pattern
-   		
-   	//	synchronized (StudentController.class) {
-   		FeedContext context = new FeedContext();
-   		
-   		//DataFeeder initialState = new FeederToStart(context);
-   		
-   		/*context.feedStatus();
-   		context.feedStateCheck();*/
-   		
-   		
-   		
-   		/***** OBSERVER PATTERN *****/
-   		
-   		// Notification Mail for Feeder stated
-   		
-   		
-			
-		
-   		if(context.getDataFeeder().getClass().equals(FeederToStart.class)){
-   			
-   			EmailNotifier emailNotifier = new EmailNotifierImpl(new org.springframework.mail.javamail.JavaMailSenderImpl());
-   			
-   			EmailDTO emailDTO = new EmailDTO();
-   			
-   		//	emailNotifier.sendMail(emailDTO,"Feeder to start");
-   		}
-   		
-   		/*try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-   		
-   		
-   		context.feedStatus();
-   		context.feedStateCheck();
-   		
-   	// Notification Mail for Feeder processing
-   		if(context.getDataFeeder().getClass().equals(FeedReader.class)){
-   			EmailNotifier emailNotifier = new EmailNotifierImpl(new org.springframework.mail.javamail.JavaMailSenderImpl());
-   			
-   			EmailDTO emailDTO = new EmailDTO();
-   			
-   		//	emailNotifier.sendMail(emailDTO,"Feeder is reading");
-   		}
-   		
-   		/*try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-   		
-   		
-   		context.feedStatus();
-   		context.feedStateCheck();
 
-   	// Notification Mail for Feeder done with processing
-   		if(context.getDataFeeder().getClass().equals(FeedProcessor.class)){
-EmailNotifier emailNotifier = new EmailNotifierImpl(new org.springframework.mail.javamail.JavaMailSenderImpl());
-   			
-   			EmailDTO emailDTO = new EmailDTO();
-   			
-   		//	emailNotifier.sendMail(emailDTO,"Feeder is processing");
-   		}
-   		
-   		/*try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-   		*/
-   		
-   		context.feedStatus();
-   		context.feedStateCheck();
-   		
-   		if(context.getDataFeeder().getClass().equals(FeedReady.class)){
-   			EmailNotifier emailNotifier = new EmailNotifierImpl(new org.springframework.mail.javamail.JavaMailSenderImpl());
-   			   			
-   			   			EmailDTO emailDTO = new EmailDTO();
-   			   			
-   			   		//	emailNotifier.sendMail(emailDTO,"feeds are ready");
-   			   		}
-   	//	}
-   		
-   		/*context.feedStatus();
-   		context.feedStateCheck();
-   		
-   		context.feedStatus();
-   		context.feedStateCheck();*/
-   		
    		return "caseAddition";
    	} 
     
