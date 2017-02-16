@@ -1,5 +1,9 @@
 package com.rev.feed;
 
+import java.util.List;
+
+import com.rev.entity.Stock;
+
 public class FeedContext {
 	
 	
@@ -39,8 +43,8 @@ public class FeedContext {
 	}
 	
 	
-	public void processFeed(){
-		this.dataFeeder.processFeed();
+	public List<Stock> processFeed(){
+		return this.dataFeeder.processFeed();
 	}
 	
 	

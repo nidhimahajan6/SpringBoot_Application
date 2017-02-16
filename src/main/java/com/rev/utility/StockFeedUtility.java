@@ -5,22 +5,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import com.rev.entity.Quote;
+import com.rev.entity.Stock;
+import com.rev.entity.Stock;
 
-public class StockFeedUtility implements Runnable{
+public class StockFeedUtility implements Callable<List<Stock>>{
 
 	private List<String> urlList = new ArrayList<>();
 	
-	private Map<String,Quote> conMap = new ConcurrentHashMap<>();
+	private Map<String,Stock> conMap = new ConcurrentHashMap<>();
 	
-	private BlockingQueue<Quote> queue;
+	private List<Stock> stockQuotes;
+	
+	private BlockingQueue<Stock> queue;
 	 int i=0;
-	public StockFeedUtility(BlockingQueue<Quote> queue) {
+	public StockFeedUtility(BlockingQueue<Stock> queue) {
 		super();
 		this.queue = queue;
 	}
@@ -41,13 +45,13 @@ public class StockFeedUtility implements Runnable{
 	}
 	
 		@Override
-		public void run() {
+		public List<Stock> call() {
 			//synchronized (FeedUtility.class) {
 				
 			while(true){
 			if(i==2){
 				System.out.println(" Stream fetching data had ended... ");
-				return;
+				return null;
 			}else{
 			try{
 				RestTemplate restTemplate = new RestTemplate();
@@ -58,23 +62,23 @@ public class StockFeedUtility implements Runnable{
 			    
 			    String str = urlList.get(i++);
 			  // System.out.println(" Thread executing is  " + Thread.currentThread().getName()+" URL is " + str);
-			    Quote quote = restTemplate.getForObject(str, Quote.class);
-			    //Quote[] q = restTemplate.getForEntity(urlList.get(i++), Quote[].class);
-			    Arrays.asList(quote);
+			    Stock stock = restTemplate.getForObject(str, Stock.class);
+			    //Stock[] q = restTemplate.getForEntity(urlList.get(i++), Stock[].class);
+			 //   Arrays.asList(Stock);
 			    System.out.println(" ");
 				System.out.println(" ");
 				System.out.println(" ");
-			    System.out.println(" Producer: Stock Utility : Thread executing is  " + Thread.currentThread().getName()+" Quote is  " + quote.toString());
+			    System.out.println(" Producer: Stock Utility : Thread executing is  " + Thread.currentThread().getName()+" Stock is  " + stock.toString());
 			    // adding to concurrent map
+			    stockQuotes.add(stock);
 			    
-			    
-			    QuoteMap.getInstance().put(quote.getTitle()==null?"dummy":quote.getTitle(), quote);
-				//System.out.println(" --> "+ quote);
-				queue.put(quote);// put into the queue the stock latest quotes 
+			   // StockMap.getInstance().put(Stock.getTitle()==null?"dummy":Stock.getTitle(), Stock);
+				//System.out.println(" --> "+ Stock);
+				queue.put(stock);// put into the queue the stock latest Stocks 
 				}catch (Exception e) {
 					e.printStackTrace();
 				}
-			return;
+			return stockQuotes;
 			}
 			}
 		//	}

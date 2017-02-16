@@ -1,13 +1,16 @@
 package com.rev.feed;
 
+import java.util.List;
+
 import com.rev.dto.EmailDTO;
+import com.rev.entity.Stock;
 
 public class StockFeeder extends FeederTemplate{
 
 	@Override
-	protected void processFeed(FeedContext context) {
+	protected List<Stock> processFeed(FeedContext context) {
 		
-		context.getDataFeeder().processFeed();
+		return context.getDataFeeder().processFeed();
 	}
 
 	@Override

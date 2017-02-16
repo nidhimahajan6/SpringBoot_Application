@@ -1,20 +1,25 @@
 package com.rev.feed;
 
+import java.util.List;
+
 import com.rev.dto.EmailDTO;
+import com.rev.entity.Stock;
 
 public class WeatherFeeder extends FeederTemplate{
 
+	private List<Stock> stockQuotes;
+	
 	@Override
-	protected void feedStateChecker(FeedContext context) {
+	protected  void feedStateChecker(FeedContext context) {
 		
-		context.getDataFeeder().processFeed();
+		 context.getDataFeeder().processFeed();
 		
 	}
 
 	@Override
-	protected void processFeed(FeedContext context) {
+	protected List<Stock> processFeed(FeedContext context) {
 		
-		context.processFeed();
+		
    		
 
    		if(context.getDataFeeder().getClass().equals(FeedProcessor.class)){
@@ -24,6 +29,8 @@ public class WeatherFeeder extends FeederTemplate{
    		}
 		
 		context.feedStateChecker();
+		
+		return context.processFeed();
 		
 	}
 

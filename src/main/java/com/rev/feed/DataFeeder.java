@@ -1,11 +1,15 @@
 package com.rev.feed;
 
+import java.util.List;
+
+import com.rev.entity.Stock;
+
 public interface DataFeeder {
 	
 	
 //	void fetchFeed();
 	
-	void processFeed();
+	List<Stock> processFeed();
 	
 	void changeState();
 

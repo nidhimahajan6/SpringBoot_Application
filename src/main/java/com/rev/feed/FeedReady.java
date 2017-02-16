@@ -1,8 +1,14 @@
 package com.rev.feed;
 
+import java.util.List;
+
+import com.rev.entity.Stock;
+
 public class FeedReady implements DataFeeder{
 	
 	private FeedContext feedContext;
+	
+	 private List<Stock> stockQuotes;
 
 	public FeedReady(FeedContext feedContext) {
 		super();
@@ -11,9 +17,9 @@ public class FeedReady implements DataFeeder{
 
 	
 
-	public void processFeed() {
+	public List<Stock> processFeed() {
 		System.out.println(" Feeder eady to serve the results ");
-		
+		return stockQuotes;
 	}
 
 

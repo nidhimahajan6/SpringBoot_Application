@@ -1,17 +1,22 @@
 package com.rev.feed;
 
 import java.net.ConnectException;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.rev.entity.Quote;
+import com.rev.entity.Stock;
 import com.rev.queue.StockDataConsumer;
 import com.rev.utility.StockFeedUtility;
 import com.rev.utility.WeatherFeedUtility;
@@ -20,7 +25,9 @@ public class FeederToStart implements DataFeeder{
 	
 	private FeedContext feedContext;
 	
-	private BlockingQueue<Quote> queue = new ArrayBlockingQueue<>(10);
+	private List<Stock> stockQuotes;
+	
+	private BlockingQueue<Stock> queue = new ArrayBlockingQueue<>(10);
 
 	public FeederToStart(FeedContext feedContext) {
 		this.feedContext = feedContext;
@@ -28,7 +35,7 @@ public class FeederToStart implements DataFeeder{
 
 	ExecutorService executorService = Executors.newFixedThreadPool(3);
 
-	public void processFeed() {
+	public List<Stock> processFeed() {
 		System.out.println(" Feeder yet to start");
 		
 		/*
@@ -38,7 +45,11 @@ public class FeederToStart implements DataFeeder{
 		
 		StockDataConsumer stockDataConsumer = new StockDataConsumer(queue);
 		
-		new Thread(stockDataConsumer).start();
+		FutureTask<List<Stock>> stockListFuture = new FutureTask<>(stockDataConsumer);
+		
+	//	new StockDataConsumer().call();
+		
+		//new Thread(stockDataConsumer).start();
 		
 		System.out.println("Started consumer");
 		
@@ -51,9 +62,11 @@ public class FeederToStart implements DataFeeder{
 		
 		
 		for(int i=0;i<2;i++){
-			Thread t = new Thread(stockFeedUtility);
-			t.setName("Thread_ " + i);
-			executorService.execute(t);
+			//Thread t = new Thread(stockFeedUtility);
+		//	t.setName("Thread_ " + i);
+			stockListFuture = new FutureTask<>(stockFeedUtility);
+			
+			executorService.execute(stockListFuture);
 			//t.start();
 		}
 		System.out.println("Started All Producers...................");
@@ -76,7 +89,7 @@ public class FeederToStart implements DataFeeder{
 		/*
 		 * Quotes: Stock prices producer
 		 */
-		WeatherFeedUtility weatherFeedUtility = new WeatherFeedUtility(queue);
+		/*WeatherFeedUtility weatherFeedUtility = new WeatherFeedUtility(queue);
 		
 	
 		
@@ -95,12 +108,25 @@ public class FeederToStart implements DataFeeder{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		*/
 		
-		
-		
+		try {
+			stockQuotes =  stockListFuture.get(200L, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+  ////?????
+		return stockQuotes;
 	}
 
-
+///??
 
 	public void changeState() {
 		System.out.println(" Feeder to start fetching the feeds ");
