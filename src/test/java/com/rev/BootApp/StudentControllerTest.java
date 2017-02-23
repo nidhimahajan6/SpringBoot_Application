@@ -1,31 +1,68 @@
 package com.rev.BootApp;
 
-
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-/*import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;*/
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.rev.AppClient;
+import com.rev.controller.StudentController;
+import com.rev.entity.Student;
+import com.rev.entity.User;
+import com.rev.repository.StudentRepository;
+import com.rev.repository.UserRepository;
+import com.rev.service.StudentService;
+import com.rev.utility.StudentBuilder;
 
-/*@ActiveProfiles("test")*/
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = AppClient.class)
-public class StudentControllerTest {
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
-  
+import java.util.ArrayList;
+import java.util.List;
 
-    @Test
-    public void whenUserIdIsProvided_thenRetrievedNameIsCorrect() {
-     /*   Mockito.when(nameService.getUserName("SomeId")).thenReturn("Mock user name");
+import javax.validation.constraints.AssertFalse;
+import org.mockito.runners.MockitoJUnitRunner;
 
-        String testName = userService.getUserName("SomeId");
-
-        Assert.assertEquals("Mock user name", testName);*/
-    }
+@RunWith(MockitoJUnitRunner.class)
+public class StudentControllerTest{
+	
+	
+	@Mock
+	StudentService studentService;
+	
+	@Mock
+	UserRepository userRepository;
+	
+	@Mock
+	Student student;
+	
+	List<User> lst = new ArrayList<>();
+	
+	@Test
+	public void test(){
+		//Student st = new Student();
+		/*when(studentRepository.save(student)).thenReturn(student);
+		when(studentRepository.findById(8)).thenReturn(lst);
+		
+		assertEquals(1, studentRepository.findById(8).size());*/
+		
+		when(userRepository.findByPreferredname("pappu")).thenReturn(lst);
+		//assertEquals(2113, userRepository.findByPreferredname("pappu").size());
+		
+		StudentService studentService = mock(StudentService.class);
+		Student st = studentService.getStudentById(2);
+		
+		verify(studentService, Mockito.times(1));
+		
+		/*StudentRepository studentRepository = mock(StudentRepository.class);
+		StudentService studentService = mock(StudentService.class);
+		//Student st = studentService.getStudentById(2);
+		Student st = new Student();
+		st.setStudentname("AkhilTest");
+		when(studentRepository.save(st)).thenReturn(st);
+		assertEquals("AkhilTest", st.getStudentname());*/
+		
+	}
 }
+

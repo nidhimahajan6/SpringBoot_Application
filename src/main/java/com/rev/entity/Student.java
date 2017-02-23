@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="student",schema="ikare")
+@Table(name="student"/*,schema="ikare"*/)
 public class Student {
 
 	@Id
@@ -41,18 +41,18 @@ public void setId(int id) {
 	
 
 
-	public Student(int id, String name, String course) {
+	public Student(int id, String studentname, String course) {
 	super();
 	this.id = id;
-	this.name = name;
+	this.studentname = studentname;
 	this.course = course;
 }
 
 
-	public Student(int id, String name, String course, int distinctionCount, String supervisor, long expenses) {
+	public Student(int id, String studentname, String course, int distinctionCount, String supervisor, long expenses) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.studentname = studentname;
 		this.course = course;
 		this.distinctionCount = distinctionCount;
 		this.supervisor = supervisor;
@@ -67,15 +67,17 @@ public void setId(int id) {
 
 	
 
-
-	private String name;
+	 @Column(name="studentname")
+	private String studentname;
+	 
+	 @Column(name="course")
     private String course;
     
     @Column(name="distinctioncount")
     private int distinctionCount;
     
    // private Project project;
-    
+    @Column(name="supervisor")
     private String supervisor;
     
     
@@ -106,7 +108,7 @@ public void setId(int id) {
 	}
 
 	
-
+	@Column(name="expenses")
 	private long expenses; 
 
     public int getDistinctionCount() {
@@ -124,12 +126,12 @@ public void setId(int id) {
 
    
 
-    public String getName() {
-        return name;
+    public String getStudentname() {
+        return studentname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStudentname(String name) {
+        this.studentname = name;
     }
 
     public String getCourse() {

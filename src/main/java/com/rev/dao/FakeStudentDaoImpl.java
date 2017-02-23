@@ -57,7 +57,7 @@ public class FakeStudentDaoImpl implements StudentDao {
     public void updateStudent(Student student){
         Student s = students.get(student.getId());
         s.setCourse(student.getCourse());
-        s.setName(student.getName());
+        s.setStudentname(student.getStudentname());
         students.put(student.getId(), student);
     }
 

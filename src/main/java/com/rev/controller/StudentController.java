@@ -304,11 +304,14 @@ public class StudentController {
    		Student std  = studentService.saveStudent(student1); // Test for persistence 
    		
    		studentRepository.save(std);
+   		/*
+   		 * Mockito test case1: to Mock the repository
+   		 */
    		
    		System.out.println("After saving the student identity");
    		
    		Student st = studentService.getStudentById(2);
-   		model.addAttribute("Name", st.getName());
+   		model.addAttribute("Name", st.getStudentname());
    		//model.addAttribute("Project", st.getProject());// commented for test
    		model.addAttribute("Course", st.getCourse()!=null?st.getCourse():"DummyCourse");
    		model.addAttribute("DistinctionCount", st.getDistinctionCount());

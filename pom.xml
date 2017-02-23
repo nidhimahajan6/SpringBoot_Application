@@ -39,7 +39,9 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.0.RELEASE</version>
+		
 		<relativePath/> <!-- lookup parent from repository -->
+		<!-- <scope>runtime</scope> -->
 	</parent> 
 
   <properties>
@@ -51,6 +53,12 @@
   </properties>
 
   <dependencies>
+  
+  <dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-all</artifactId>
+    <version>1.9.5</version>
+</dependency>
   
     <dependency>
       <groupId>junit</groupId>
@@ -104,12 +112,13 @@
             <!-- <version>3.2.0.RELEASE</version> -->
         </dependency>
         
-      <dependency>
+      <!-- <dependency>
     <groupId>javax.mail</groupId>
     <artifactId>javax.mail-api</artifactId>
-   <!--  <version>1.5.1</version> -->
+    <scope>runtime</scope>
+    <version>1.5.1</version>
 </dependency>
-
+ -->
 
    
    <!--  email using spring -->
@@ -225,6 +234,7 @@
  <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <scope>test</scope>
         </dependency>
         
         <!--  POSTGRE ONFIGURATION FOR DATASOURCE -->

@@ -1,12 +1,2 @@
-INSERT INTO Sample (ID,
-SampleName,
-course,
-supervisor,
-distinctionCount)
-VALUES
-(001,
-'',
-'',
-'sample',
-3);
-	
+ INSERT INTO student (id, studentname, course, supervisor, distinctioncount, expenses) 
+ VALUES (113, "", "", "sample", 1, 1000) ; 
